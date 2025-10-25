@@ -2,6 +2,7 @@ APP="LEMP stack running IoT stack"
 OPT_DISK=1
 OPT_RAM=384
 OPT_MAP=0
+OPT_OSVERSION=3.22
 # iot/.env includes the following private parameters
 # OPT_CTID OPT_MACADDR ROOTDOMAIN SUBDOMAINS
 
