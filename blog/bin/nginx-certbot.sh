@@ -4,12 +4,13 @@
 # challenge response directory, run certbot and clean up
 
 DOMAIN=ellisons.org.uk
-FULLCHAIN=/etc/letsencrypt/live/blog.${DOMAIN}/fullchain.pem
+LIVE=/etc/letsencrypt/live/blog.${DOMAIN}*
+FULLCHAIN=${LIVE}/fullchain.pem
 
-if [ ! -f ${FULLCHAIN} ] || [ -n "$(find ${FULLCHAIN} -mtime +61)" ]; then
+if [ ! -f ${FULLCHAIN}* ]  || [ -n "$(find ${FULLCHAIN}* -mtime +61)" ]; then
   echo "$(date -u) Checking / Renewing *.${DOMAIN} certificates" > /proc/1/fd/1
-  mkdir 777 /var/www/acme
-  certbot certonly -n -d blog.${DOMAIN},ha.${DOMAIN},ph.${DOMAIN} \
+  mkdir -m 777 /var/www/acme
+  certbot certonly -n -d blog.${DOMAIN},ha.${DOMAIN},ph.${DOMAIN},test.${DOMAIN} \
                    --webroot -w /var/www/acme > /proc/1/fd/1  2>&1
   rm -rf /var/www/acme
 else

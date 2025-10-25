@@ -1,5 +1,5 @@
 APP="LEMP stack running blog.ellisons.org.uk Webserver"
-OPT_DISK=1
+OPT_DISK=2
 OPT_RAM=256
 OPT_MAP=1
 # blog/.env should set the following private parameters
