@@ -49,7 +49,7 @@ function setLXCoptionDefaults {
     VERBOSE="no"
     DISK="0.5" DISKSTORE="local-lvm" TEMPLATESTORE="local"
     BRIDGE="vmbr0" FEATURES="nesting=1" NET="dhcp"
-    OSTYPE="alpine" OSVERSION="3.19"
+    OSTYPE="alpine" OSVERSION="3.22"
     DOMAIN="home" HOST="$ROOT_DIR"
     CTID=$(sudo pvesh get /cluster/nextid)
     DNS=$(grep nameserver /etc/resolv.conf | head -1 |awk '{ print $2; }')
@@ -123,7 +123,7 @@ function get_template {
         # Refresh the template list and download new template if nec.
         sudo pveam update >/dev/null
 
-        local template= $(sudo pveam available --section system |
+        local template=$(sudo pveam available --section system |
                           awk '{print $2}' |  grep "^$os" | tail -1) ||
             msg_err "Unable to find template for $os"
 
@@ -267,8 +267,12 @@ function tgt_package {
       common)
         package_list=(iputils logrotate nmap procps openssh-server rsync sudo tar tree util-linux vim xz)
         [[ -f /etc/debian_version ]] && package_list=(nmap rsync tree sudo xz-utils) ;;
+      perl)
+        for _p in $@; do package_list+=("perl-$_p"); done ;;
       php)
         for _p in $@; do package_list+=("php81-$_p"); done ;;
+      php83)
+        for _p in $@; do package_list+=("php83-$_p"); done ;;
       add)
         package_list+=($@) ;;
       install)

@@ -18,7 +18,7 @@ echo -e "Versions: node: $(node -v 2>&3)"
 echo -e "          npm:  $(npm -v 2>&3)\n"
 
 sudo npm install -g  --unsafe-perm --no-progress --no-update-notifier --no-audit \
-                 --no-fund --loglevel=error  node-red@latest 2>&1
+                 --no-fund --verbose --loglevel=error  node-red@latest 2>&1
 
 mkdir -p .node-red/node_modules
 
@@ -34,5 +34,6 @@ sudo chown -Rf $NODERED_USER:$NODERED_GROUP node_modules 2>&3 >&3
 sudo npm config set update-notifier false 2>&3 >&3
 
 echo "Installing extra nodes: $EXTRANODES"
-npm install --unsafe-perm --save --no-progress --no-update-notifier --no-audit --no-fund $EXTRANODES 2>&1
+npm install --unsafe-perm --save --no-progress --no-update-notifier \
+	    --verbose --no-audit --no-fund $EXTRANODES 2>&1
 

@@ -33,16 +33,17 @@ cp -r conf/mosquitto /etc
 mosquitto_passwd -U /etc/mosquitto/passwd
 
 # Confgure MariaDb, MQTT & Zigbee2MTT
-[[ -f /var/lib/zigbee2mqtt/configuration.yaml ]] ||
-    cp  {conf,/var/lib}/zigbee2mqtt/configuration.yaml
+cp  conf/zigbee2mqtt/* /var/lib/zigbee2mqtt
+ln -sf /var/lib/zigbee2mqtt/{configuration,secret}.yaml /etc/zigbee2mqtt
+chmod 660 /var/lib/zigbee2mqtt/secret.yaml
+chmod 664 /var/lib/zigbee2mqtt/configuration.yaml
+chown root:zigbee2mqtt /var/lib/zigbee2mqtt/*.yaml
+
 sed 's/^ *//' << EOD > /etc/zigbee2mqtt/secret.yaml
     mqtt_password: $MQTTUSER_ZIGBEE
     network_key:   $ZIGBEE_NEYKEY
     pan_id:        $ZIGBEE_PANID
 EOD
-chmod 660 /etc/zigbee2mqtt/secret.yaml
-chmod 664 /etc/zigbee2mqtt/configuration.yaml
-chown root:zigbee2mqtt /etc/zigbee2mqtt/*.yaml
 
 # Node-RED is installed using npm as a user mode app in the IOT user account.
 # It also uses port 80 so we need to do the setcaps on the node runtine.
